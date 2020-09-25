@@ -1,0 +1,6 @@
+<launch>
+
+    <node name="joy_node" pkg="joy" type="joy_node"></node>
+    <node name="teleop_joy" pkg="xbox_one_joy" type="teleop_joy" output="screen"></node>
+
+</launch>
