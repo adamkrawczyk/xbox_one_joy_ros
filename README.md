@@ -15,6 +15,20 @@ sudo dkms install -m xpad -v 0.4
 
 To test if joy works use `jstest /dev/input/js{0}`
 
+## Errors 
+
+After some time controller started to keeps disconnecting I resolved this by running 
+
+```
+sudo apt install -y sysfsutils
+```
+
+and edit /etc/sysfs.conf (as admin) - add this line at the end of the file:
+
+```
+/module/bluetooth/parameters/disable_ertm=1
+```
+
 ## Usage
 
 ```
