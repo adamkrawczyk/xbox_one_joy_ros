@@ -37,6 +37,18 @@ TeleopJoy::TeleopJoy() : linear_(1), angular_(0), omni_(2)
 void TeleopJoy::joyCallback(const sensor_msgs::Joy::ConstPtr &joy)
 {
     geometry_msgs::Twist twist;
+
+    if (joy->buttons[0] == 1)
+    {
+        a_scale_ = 1.0;
+        l_scale_ = 1.0;
+    }
+    else
+    {
+        a_scale_ = 0.5;
+        l_scale_ = 0.5;
+    }
+
     twist.angular.z = a_scale_ * joy->axes[angular_];
     twist.linear.x = l_scale_ * joy->axes[linear_];
     twist.linear.y = l_scale_ * joy->axes[omni_];
