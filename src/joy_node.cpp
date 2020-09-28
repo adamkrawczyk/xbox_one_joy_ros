@@ -14,23 +14,23 @@ private:
 
     ros::NodeHandle nh_;
 
-    int linear_, angular_;
+    int linear_{1}, angular_{0};
     double l_scale_{0.5}, a_scale_{0.5};
     ros::Publisher vel_pub_;
     ros::Subscriber joy_sub_;
 };
 
-TeleopJoy::TeleopJoy() : linear_(1),
-                         angular_(0)
+TeleopJoy::TeleopJoy() : linear_(linear_), angular_(angular_)
 {
 
     nh_.param("axis_linear", linear_, linear_);
     nh_.param("axis_angular", angular_, angular_);
     nh_.param("scale_angular", a_scale_, a_scale_);
-    nh_.param("scale_linear", l_scale_, l_scale_);
+    nh_.param("scale_linear", l_scale_, a_scale_);
+  
+    // nh_.getParam("/scale_linear", l_scale_);
 
     vel_pub_ = nh_.advertise<geometry_msgs::Twist>("/cmd_vel", 1);
-
     joy_sub_ = nh_.subscribe<sensor_msgs::Joy>("joy", 1, &TeleopJoy::joyCallback, this);
 }
 
@@ -40,8 +40,10 @@ void TeleopJoy::joyCallback(const sensor_msgs::Joy::ConstPtr &joy)
     twist.angular.z = a_scale_ * joy->axes[angular_];
     twist.linear.x = l_scale_ * joy->axes[linear_];
     twist.linear.y = 0.0;
-    ROS_INFO("Twist msg:");
-    ROS_INFO("x: [%f], y: [%f], z: [%f]", twist.linear.x, twist.linear.z, twist.angular.z);
+    // ROS_INFO("Twist msg:");
+    // ROS_INFO("x: [%f], y: [%f], z: [%f]", twist.linear.x, twist.linear.z, twist.angular.z);
+    // ROS_INFO("Scale factors:");
+    // ROS_INFO("linear: [%f], angular: [%f], omni: [%f]", a_scale_ , a_scale_, twist.angular.z);
     vel_pub_.publish(twist);
 }
 

@@ -25,3 +25,5 @@ rosrun xbox_one_joy teleop_joy
 OR
 
 ```
+roslaunch xbox_one_joy_ros joy_teleop.launch
+```
